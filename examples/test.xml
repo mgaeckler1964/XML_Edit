@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<?xml-stylesheet href="test.css" type="text/css" ?>
+<!DOCTYPE root SYSTEM "root.dtd" >
+<root>
+
+	<!-- topBox>This is the TOP Box</topBox -->
+
+	<Test>Hello world Test</Test>
+
+	<half>50 % Width</half>
+	<fixedWidth>Fixed Width</fixedWidth>
+	<mmWidth>100mm Width</mmWidth>
+	<cmWidth>10cm Width</cmWidth>
+	<inWidth>1in Width</inWidth>
+
+	<p>
+		Hello world before table
+		<inline_table>
+			<tr>
+				<td>inline cell 1.1</td>
+				<td>inline cell 1.2</td>
+			</tr>
+			<tr>
+				<td>inline cell 2.1</td>
+				<td>inline cell 2.2</td>
+			</tr>
+		</inline_table>
+		Hello world after table
+		<table>
+			<tr>
+				<td>cell 1.1</td>
+				<td>cell 1.2</td>
+			</tr>
+			<tr>
+				<td>cell 2.1</td>
+				<td>cell 2.2</td>
+			</tr>
+		</table>
+	</p>
+
+	<YET>Yet Another Test
+	this is
+	the <BOLD>pleasure</BOLD> dome
+	<under>Underline</under>
+	<strike>strikethrough</strike>
+	<italic>italic</italic>
+	<under><strike><italic>all</italic></strike></under>
+	</YET>
+	<borderBox>
+	This is my borderbox
+	</borderBox>
+	
+	<long>
+		<left>LEFT BOX FOR ALL 1</left>
+		<left>LEFT BOX FOR ALL 2</left>
+		<left>LEFT BOX FOR ALL 3</left>
+		<left>LEFT BOX FOR ALL 4</left>
+		<left>LEFT BOX FOR ALL 5</left>
+		<right>RIGHT BOX FOR ALL 1</right>
+		<right>RIGHT BOX FOR ALL 2</right>
+		<right>RIGHT BOX FOR ALL 3</right>
+		<right>RIGHT BOX FOR ALL 4</right>
+		<right>RIGHT BOX FOR ALL 5</right>
+		<right>RIGHT BOX FOR ALL 6</right>
+		<right>RIGHT BOX FOR ALL 7</right>
+		<inlineBlock>inline block 1</inlineBlock>
+		the quick brown fox jumps over the lazy dog.
+		<inlineBlock>inline block 2</inlineBlock>
+		the quick brown fox jumps over the lazy dog.
+		<inlineBlock>inline block 3</inlineBlock>
+		the quick brown fox jumps over the lazy dog.
+		<inlineBlock>inline block 4</inlineBlock>
+		the quick brown fox jumps over the lazy dog.
+		<inlineBlock>inline block 5</inlineBlock>
+		the quick brown fox jumps over the lazy dog.
+		<inlineBlock>inline block 6</inlineBlock>
+		the quick brown fox jumps over the lazy dog.
+		<inlineBlock>inline block 7</inlineBlock>
+		the quick brown fox jumps over the lazy dog.
+		<inlineBlock>inline block 8</inlineBlock>
+		the quick brown fox jumps over the lazy dog.
+		<inlineBlock>inline block 9</inlineBlock>
+		the quick brown fox jumps over the lazy dog.
+		<inlineBlock>inline block 10</inlineBlock>
+		the quick brown fox jumps over the lazy dog.
+		<inlineBlock>inline block 11</inlineBlock>
+		the quick brown fox jumps over the lazy dog.
+		<inlineBlock>inline block 12</inlineBlock>
+		the quick brown fox jumps over the lazy dog.
+		<inlineBlock>inline block 13</inlineBlock>
+		the quick brown fox jumps over the lazy dog.
+		<inlineBlock>inline block 14</inlineBlock>
+		the quick brown fox jumps over the lazy dog.
+		<inlineBlock>inline block 15</inlineBlock>
+	</long>
+	<ul>
+		<li>list item</li>
+		<noList>nolist item</noList>
+		<disc>disc</disc>
+		<circle>circle</circle>
+		<square>square</square>
+		<upper>upper</upper>
+		<lower>lower</lower>
+		<decimal>decimal</decimal>
+		<decimalLeadingZero>decimalLeadingZero</decimalLeadingZero>
+	</ul>
+
+	<pre>
+		this is a pre block
+		the quick brown fox     jumps over the lazy dog.
+		the quick brown fox    jumps over the lazy dog.
+		the quick brown fox    jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox    jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox    jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox    jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox    jumps over the lazy dog.
+	</pre>
+	<preLine>
+		this is a pre-line block
+		the quick brown fox     jumps over the lazy dog.
+		the quick brown fox    jumps over the lazy dog.
+		the quick brown fox    jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox    jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox    jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox    jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox    jumps over the lazy dog.
+	</preLine>
+
+	<preWrap>
+		this is a pre-wrap block
+		the quick brown fox     jumps over the lazy dog.
+		the quick brown fox    jumps over the lazy dog.
+		the quick brown fox    jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox    jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox    jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox    jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox    jumps over the lazy dog.
+	</preWrap>
+
+	<spacedChar>
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+		the quick brown fox jumps over the lazy dog.
+	</spacedChar>
+</root>

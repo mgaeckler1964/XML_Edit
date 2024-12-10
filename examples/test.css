@@ -1,0 +1,253 @@
+root
+{
+	font-family: Arial, Helvetica, MS Sans Serif;
+	xfont-size: 11pt;
+	padding: 20px;
+}
+Test
+{
+	display:block;
+	background-color:#AAFFAA;
+	font-size:14pt;
+	padding: 1em;
+	margin:1ex;
+}
+half
+{
+	display:block;
+	width:50%;
+	background-color:#FFAAAA;
+}
+fixedWidth
+{
+	display:block;
+	width:300px;
+	background-color:#AAAAFF;
+}
+mmWidth
+{
+	display:block;
+	width:100mm;
+	background-color:#AAFFAA;
+}
+cmWidth
+{
+	display:block;
+	width:10cm;
+	background-color:#AAFFAA;
+}
+inWidth
+{
+	display:block;
+	width:4in;
+	background-color:#AAFFAA;
+}
+borderBox
+{
+	display:block;
+	margin: 10px;
+
+	border: 10px solid rgb( 127 , 127 , 127 ) 
+	xborder-color: #AAAAAA;
+	xborder-style: solid;
+	xborder-width: 10px;
+
+	border-top-color: #0000FF;
+	xborder-top-style: ridge;
+
+	xborder-bottom-style: groove;
+
+	border-left: 20px solid #FF0000;
+	border-right-color: #00FF00;
+	
+	padding: 10px;
+	height: 10px;
+	line-height:10px;
+	font-size:10px;
+	background-color:#FFFF00;
+}
+YET
+{
+	display: block;
+	font-size: 20pt;
+	margin-bottom: 20px;
+}
+
+BOLD
+{
+	font-weight: bold;
+	line-height: 40px;
+	font-family: Times New Roman;
+	color: #FF0000;
+	background-color: #0000FF;
+}
+under
+{
+	text-decoration: underline;
+}
+strike
+{
+	text-decoration: line-through;
+}
+italic
+{
+	font-style: italic
+}
+left
+{
+	float: left;
+	width: 80px;
+	margin-right: 16px;
+	margin-bottom: 16px;
+	text-align: left;
+	color: #00FF00;
+	background-color: #FF00FF;
+}
+right
+{
+	float: right;
+	width: 80px;
+	margin-left: 16px;
+	margin-bottom: 16px;
+	text-align: right;
+	color: #0000FF;
+	background-color: #FF0000;
+}
+
+inlineBlock
+{
+	display: inline-block;
+	width: 50px;
+	background-color:#AAAAAA;
+	padding: 10px;
+}
+	
+long, p
+{
+	display: block;
+	xtext-align: center;
+	margin-bottom:16px;
+}
+wide
+{
+	display: block;
+	width: 1024px;
+	text-align: center;
+}
+spacedChar
+{
+	display: block;
+	letter-spacing: 5px;
+	text-indent: 30px;
+}
+
+topBox
+{
+	position: fixed;
+	display: block;
+	top: 10px;
+	left: 10px;
+	bottom: 10ox;
+	width: 150px;
+	margin: 10;
+	background-color: #FFFFFF;
+}
+
+inline_table
+{
+	display: inline-table;
+}
+
+table
+{
+	display: table;
+}
+tbody
+{
+	display: table-row-group;
+}
+tbody
+{
+	display: table-row-group;
+}
+tr
+{
+	display: table-row;
+}
+td, th
+{
+	display: table-cell;
+}
+ul
+{
+	display:block;
+	margin-left:40px;
+	margin-bottom:16px;
+	background-color:#CCCCCC;
+	color: #7777FF;
+	xlist-style-type: disc;
+}
+li
+{
+	display: list-item;
+	list-style-type: disc;
+}
+noList
+{
+	display: list-item;
+	list-style-type: none;
+}
+disc
+{
+	display: list-item;
+	list-style-type: disc;
+}
+circle
+{
+	display: list-item;
+	list-style-type: circle;
+}
+square
+{
+	display: list-item;
+	list-style-type: square;
+}
+upper
+{
+	display: list-item;
+	list-style-type: upper-alpha;
+}
+lower
+{
+	display: list-item;
+	list-style-type: lower-alpha;
+}
+decimal
+{
+	display: list-item;
+	list-style-type: decimal;
+}
+decimalLeadingZero
+{
+	display: list-item;
+	list-style-type: decimal-leading-zero;
+}
+
+pre
+{
+	display: block;
+	font-family: Courier;
+	white-space: pre;
+}
+preLine
+{
+	display: block;
+	font-family: Courier;
+	white-space: pre-line;
+}
+preWrap
+{
+	display: block;
+	font-family: Courier;
+	white-space: pre-wrap;
+}

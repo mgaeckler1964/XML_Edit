@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!-- C++Builder XML Project -->
+<PROJECT>
+  <MACROS>
+    <VERSION value="BCB.05.03"/>
+    <PROJECT value="..\..\object\xmlEdit.exe"/>
+    <OBJFILES value="..\..\object\xmlEdit\xmlEdit.obj ..\..\object\xmlEdit\xmlEditFrm.obj 
+      ..\..\object\xmlEdit\xmlEditFram.obj ..\..\object\xmlEdit\XmlViewerFrm.obj 
+      ..\..\object\xmlEdit\cssStyleFram.obj ..\..\object\xmlEdit\cssStyleFrm.obj"/>
+    <RESFILES value="xmlEdit.res"/>
+    <IDLFILES value=""/>
+    <IDLGENFILES value=""/>
+    <DEFFILE value=""/>
+    <RESDEPEN value="$(RESFILES) xmlEditFrm.dfm xmlEditFram.dfm XmlViewerFrm.dfm 
+      cssStyleFram.dfm cssStyleFrm.dfm"/>
+    <LIBFILES value="..\..\Object\winlib\winlibBCB.lib ..\..\Object\gaklib\gaklib_bcb.lib"/>
+    <LIBRARIES value="Vcl50.lib"/>
+    <SPARELIBS value="Vcl50.lib"/>
+    <PACKAGES value="Vcl50.bpi Vclx50.bpi bcbsmp50.bpi Vcldb50.bpi vclado50.bpi ibsmp50.bpi 
+      VCLBDE50.bpi vcldbx50.bpi Qrpt50.bpi TeeUI50.bpi TeeDB50.bpi Tee50.bpi 
+      Dss50.bpi TeeQR50.bpi VCLIB50.bpi Vclmid50.bpi vclie50.bpi Inetdb50.bpi 
+      Inet50.bpi NMFast50.bpi webmid50.bpi bcbie50.bpi dclocx50.bpi 
+      bcb2kaxserver50.bpi"/>
+    <PATHCPP value=".;"/>
+    <PATHPAS value=".;"/>
+    <PATHRC value=".;"/>
+    <PATHASM value=".;"/>
+    <DEBUGLIBPATH value="$(BCB)\lib_uk\debug"/>
+    <RELEASELIBPATH value="$(BCB)\lib_uk\release"/>
+    <LINKER value="tlink32"/>
+    <USERDEFINES value="NDEBUG"/>
+    <SYSDEFINES value="NO_STRICT"/>
+    <MAINSOURCE value="xmlEdit.cpp"/>
+    <INCLUDEPATH value="..\GAKLIB\VCL_TOOLS;..\GAKLIB\CTOOLS;f:\object\;..\WINLIB;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;e:\openssl\include\;&quot;C:\Program Files (x86)\OpenSSL\include\&quot;"/>
+    <LIBPATH value="..\GAKLIB\VCL_TOOLS;..\GAKLIB\CTOOLS;f:\object\;..\WINLIB;$(BCB)\lib_uk\obj;$(BCB)\lib_uk"/>
+    <WARNINGS value="-w-par"/>
+  </MACROS>
+  <OPTIONS>
+    <IDLCFLAGS value="-I..\GAKLIB\VCL_TOOLS -I..\GAKLIB\CTOOLS -If:\object\. -I..\WINLIB 
+      -I$(BCB)\include -I$(BCB)\include\vcl -I..\gaklib\include -I.. 
+      -Ie:\openssl\include\. -I&quot;C:\Program Files (x86)\OpenSSL\include\.&quot; 
+      -src_suffix cpp -DNDEBUG -boa"/>
+    <CFLAG1 value="-O2 -H=..\..\object\xmlEdit\xmlEdit.csm -Hc -w -Vx -Ve -X- -a8 -6 -b- -d 
+      -k- -vi -c -tW -tWM"/>
+    <PFLAGS value="-N2..\..\object\xmlEdit -N0..\..\object\xmlEdit -$Y- -$L- -$D- -v -JPHNE -M"/>
+    <RFLAGS value=""/>
+    <AFLAGS value="/mx /w2 /zn"/>
+    <LFLAGS value="-I..\..\object\xmlEdit -D&quot;&quot; -aa -Tpe -GD -s -Gn -w"/>
+  </OPTIONS>
+  <LINKER>
+    <ALLOBJ value="c0w32.obj sysinit.obj $(OBJFILES)"/>
+    <ALLRES value="$(RESFILES)"/>
+    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mt.lib"/>
+  </LINKER>
+  <IDEOPTIONS>
+[Version Info]
+IncludeVerInfo=1
+AutoIncBuild=1
+MajorVer=1
+MinorVer=0
+Release=0
+Build=100
+Debug=0
+PreRelease=0
+Special=0
+Private=0
+DLL=0
+Locale=1033
+CodePage=1252
+
+[Version Info Keys]
+CompanyName=Martin Gäckler
+FileDescription=XML Editor
+FileVersion=1.0.0.100
+InternalName=XMLEDIT
+LegalCopyright=(c) 2010-2013 by Martin Gäckler / Linz / Austria
+LegalTrademarks=
+OriginalFilename=xmlEdit.exe
+ProductName=XML Editor
+ProductVersion=1.0.0.0
+Comments=
+
+[HistoryLists\hlIncludePath]
+Count=7
+Item0=..\GAKLIB\VCL_TOOLS;..\GAKLIB\CTOOLS;f:\object\;..\WINLIB;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;e:\openssl\include\;C:\Program Files (x86)\OpenSSL\include\
+Item1=e:\CBuilder5\Projects\;..\GAKLIB\VCL_TOOLS;..\GAKLIB\CTOOLS;f:\object\;..\WINLIB;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;e:\openssl\include\;C:\Program Files (x86)\OpenSSL\include\
+Item2=e:\CBuilder5\Projects;..\GAKLIB\VCL_TOOLS;..\GAKLIB\CTOOLS;f:\object\;..\WINLIB;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;e:\openssl\include\;C:\Program Files (x86)\OpenSSL\include\
+Item3=..\GAKLIB\CTOOLS;f:\object\;..\WINLIB;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;e:\openssl\include\;C:\Program Files (x86)\OpenSSL\include\
+Item4=f:\object\;..\WINLIB;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;e:\openssl\include\;C:\Program Files (x86)\OpenSSL\include\
+Item5=f:\object;..\WINLIB;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;e:\openssl\include\;C:\Program Files (x86)\OpenSSL\include\
+Item6=..\WINLIB;$(BCB)\include;$(BCB)\include\vcl;..\gaklib\include;..;e:\openssl\include\;C:\Program Files (x86)\OpenSSL\include\
+
+[HistoryLists\hlLibraryPath]
+Count=9
+Item0=..\GAKLIB\VCL_TOOLS;..\GAKLIB\CTOOLS;f:\object\;..\WINLIB;$(BCB)\lib_uk\obj;$(BCB)\lib_uk
+Item1=e:\CBuilder5\Projects\;..\GAKLIB\VCL_TOOLS;..\GAKLIB\CTOOLS;f:\object\;..\WINLIB;$(BCB)\lib_uk\obj;$(BCB)\lib_uk
+Item2=;e:\CBuilder5\Projects;..\GAKLIB\VCL_TOOLS;..\GAKLIB\CTOOLS;f:\object\;..\WINLIB;$(BCB)\lib_uk\obj;$(BCB)\lib_uk
+Item3=..\GAKLIB\CTOOLS;f:\object\;..\WINLIB;$(BCB)\lib_uk\obj;$(BCB)\lib_uk
+Item4=;;..\GAKLIB\CTOOLS;f:\object\;..\WINLIB;$(BCB)\lib_uk\obj;$(BCB)\lib_uk
+Item5=f:\object\;..\WINLIB;$(BCB)\lib_uk\obj;$(BCB)\lib_uk
+Item6=f:\object;..\WINLIB;$(BCB)\lib_uk\obj;$(BCB)\lib_uk
+Item7=..\WINLIB;$(BCB)\lib_uk\obj;$(BCB)\lib_uk
+Item8=$(BCB)\lib_uk\obj;$(BCB)\lib_uk
+
+[HistoryLists\hlDebugSourcePath]
+Count=1
+Item0=$(BCB)\source\vcl
+
+[HistoryLists\hlConditionals]
+Count=3
+Item0=NDEBUG
+Item1=NDEBUG;_DEBUG
+Item2=_DEBUG
+
+[HistoryLists\hlIntOutputDir]
+Count=1
+Item0=..\..\object\xmlEdit
+
+[HistoryLists\hlFinalOutputDir]
+Count=1
+Item0=..\..\object\
+
+[Debugging]
+DebugSourceDirs=$(BCB)\source\vcl
+
+[Parameters]
+RunParams=
+HostApplication=
+RemoteHost=
+RemotePath=
+RemoteDebug=0
+
+[Compiler]
+ShowInfoMsgs=0
+LinkDebugVcl=1
+LinkCGLIB=0
+
+[CORBA]
+AddServerUnit=1
+AddClientUnit=1
+PrecompiledHeaders=1
+
+[Language]
+ActiveLang=
+ProjectLang=
+RootDir=
+  </IDEOPTIONS>
+</PROJECT>

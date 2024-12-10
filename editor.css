@@ -1,0 +1,129 @@
+/*
+	docman content
+*/
+layout, title,
+div.topLeft, topLeft, div.top, top, div.topRight, topRight,
+div.left, left, div.content, content, div.right, right,
+div.bottomLeft, bottomLeft, div.bottom, bottom, div.bottomRight, bottomRight
+{
+	display: block;
+	font-family: Arial, Helvetica, MS Sans Serif;
+	font-size: 10pt;
+	padding: 16px;
+	border: 1px solid black
+	margin-bottom: 8px;
+}
+
+title
+{
+	font-weight: bold;
+	font-size: 2em;
+	text-decoration: underline;
+	margin-bottom: 16px;
+}
+
+
+/*
+	html css
+*/
+head, script, style
+{
+	display: none;
+}
+body, p, div, ul, pre, h1, h2, h3, h4, h5, h6, br
+{
+	display: block;
+	font-family: Arial, Helvetica, MS Sans Serif;
+	font-size: 10pt;
+}
+p, ul, pre, h1, h2, h3, h4, h5, h6
+{
+	margin-bottom:16px;
+}
+h1, h2, h3, h4
+{
+	font-weight: bold;
+}
+h1
+{
+	font-size: 2em;
+}
+h2
+{
+	font-size: 1.7em;
+}
+h3
+{
+	font-size: 1.3em;
+}
+h4
+{
+	font-weight: bold;
+}
+h5
+{
+	text-decoration: underline;
+}
+ul, ol
+{
+	margin-left: 40px;
+}
+pre
+{
+	white-space: pre;
+	font-family: Courier New;
+}
+ul
+{
+	list-style-type: circle;
+}
+ol
+{
+	list-style-type: decimal;
+}
+li
+{
+	display:list-item;
+}
+table
+{
+	display: table;
+}
+thead
+{
+	display: table-header-group;
+}
+tbody
+{
+	display: table-row-group;
+}
+tfoot
+{
+	display: table-footer-group;
+}
+tr
+{
+	display: table-row;
+}
+td, th
+{
+	display: table-cell;
+	padding: 2px;
+}
+th, b
+{
+	font-weight: bold;
+}
+i
+{
+	font-style: italic;
+}
+u, a
+{
+	text-decoration: underline;
+}
+a
+{
+	color: #0000FF;
+}
+

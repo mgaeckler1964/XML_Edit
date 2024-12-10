@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<?xml-stylesheet href="table.css" type="text/css" ?>
+<!DOCTYPE root SYSTEM "root.dtd" >
+<root>
+	Normal simple small Table
+	<table>
+		<tr>
+			<td>cell 1.1</td>
+			<fixedWidth>fixed</fixedWidth>
+			<td>cell 1.2</td>
+		</tr>
+		<tr>
+			<td>cell 2.1</td>
+			<fixedWidth>fixed</fixedWidth>
+			<td>cell 2.2</td>
+		</tr>
+	</table>
+
+	table with large content in a cell without width
+	<table>
+		<tr>
+			<td>cell 1.1</td>
+			<fixedWidth>fixed</fixedWidth>
+			<td>cell 1.2</td>
+			<td>this is a large cell it should contain line breaks i hope we can see this super feature</td>
+		</tr>
+		<tr>
+			<td>cell 2.1</td>
+			<fixedWidth>fixed</fixedWidth>
+			<td>cell 2.2</td>
+		</tr>
+	</table>
+
+	table with large content in a cell with width
+	<table>
+		<tr>
+			<td>cell 1.1</td>
+			<fixedWidth>this is a large cell it should contain line breaks i hope we can see this super feature</fixedWidth>
+			<td>cell 1.2</td>
+		</tr>
+		<tr>
+			<td>cell 2.1</td>
+			<fixedWidth>fixed</fixedWidth>
+			<td>cell 2.2</td>
+		</tr>
+	</table>
+
+	table with large content in a cell with both
+	<table>
+		<tr>
+			<td>cell 1.1</td>
+			<fixedWidth>this is a large cell it should contain line breaks i hope we can see this super feature</fixedWidth>
+			<td>cell 1.2</td>
+			<td>this is a large cell it should contain line breaks i hope we can see this super feature</td>
+		</tr>
+		<tr>
+			<td>cell 2.1</td>
+			<fixedWidth>fixed</fixedWidth>
+			<td>cell 2.2</td>
+		</tr>
+	</table>
+</root>

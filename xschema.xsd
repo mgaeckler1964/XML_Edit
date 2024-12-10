@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://www.w3.org/2001/XMLSchema">
+<element name="schema" type="schema" />
+<complexType name="schema">
+<all>
+<element name="attributeGroup" type="attributeGroup" />
+<element name="complexType" type="complexType" />
+<element name="element" type="element" />
+<element name="group" type="group" />
+<element name="import" type="include" />
+<element name="include" type="include" />
+<element name="simpleType" type="simpleType" />
+</all>
+<attribute name="targetNamespace" type="string" />
+<attribute name="version" type="string" />
+</complexType>
+<complexType name="include">
+<attribute name="schemaLocation" type="string" />
+</complexType>
+<complexType name="element">
+<choice minOccurs="0" maxOccurs="1">
+<element name="simpleType" type="complexType" minOccurs="0" maxOccurs="1" />
+<element name="complexType" type="complexType" minOccurs="0" maxOccurs="1" />
+</choice>
+<attributeGroup ref="occurence" />
+<attribute name="name" type="string" />
+<attribute name="type" type="string" />
+</complexType>
+<complexType name="simpleType">
+<sequence>
+<element name="restriction" type="restriction" />
+</sequence>
+<attribute name="name" />
+</complexType>
+<complexType name="restriction">
+<all>
+<element name="enumeration">
+<complexType>
+<attribute name="value" type="string" />
+</complexType>
+</element>
+</all>
+<attribute name="base" type="string" />
+</complexType>
+<complexType name="complexType">
+<sequence>
+<choice minOccurs="0" maxOccurs="1">
+<element name="sequence" type="sequence" />
+<element name="choice" type="choice" />
+<element name="all" type="all" />
+<element name="group" type="group" />
+</choice>
+<element name="attributeGroup" type="attributeGroup" minOccurs="0" />
+<element name="attribute" type="attribute" minOccurs="0" />
+<element name="simpleContent" type="simpleContent" minOccurs="0" />
+</sequence>
+<attribute name="mixed" type="boolean" />
+<attribute name="name" type="string" />
+</complexType>
+<complexType name="sequence">
+<all>
+<element name="element" type="element" />
+<element name="group" type="group" />
+<element name="choice" type="choice" />
+<element name="sequence" type="sequence" />
+</all>
+<attributeGroup ref="occurence" />
+</complexType>
+<complexType name="choice">
+<all>
+<element name="element" type="element" />
+<element name="group" type="group" />
+<element name="choice" type="choice" />
+<element name="sequence" type="sequence" />
+</all>
+<attributeGroup ref="occurence" />
+</complexType>
+<complexType name="all">
+<all>
+<element name="element" type="element" />
+</all>
+</complexType>
+<complexType name="group">
+<sequence>
+<choice minOccurs="0" maxOccurs="1">
+<element name="sequence" type="sequence" />
+<element name="choice" type="choice" />
+<element name="all" type="all" />
+</choice>
+</sequence>
+<attributeGroup ref="occurence" />
+<attribute name="ref" type="string" />
+<attribute name="name" type="string" />
+</complexType>
+<complexType name="attributeGroup">
+<group ref="attributeList" />
+<attribute name="ref" type="string" />
+<attribute name="name" type="string" />
+</complexType>
+<complexType name="attribute">
+<attribute name="name" type="string" />
+<attribute name="type" type="string" />
+<attribute name="default" type="string" />
+</complexType>
+<complexType name="simpleContent">
+<sequence>
+<element name="extension" type="extension" maxOccurs="1" minOccurs="1" />
+</sequence>
+</complexType>
+<complexType name="extension">
+<group ref="attributeList" />
+</complexType>
+<attributeGroup name="occurence">
+<attribute name="minOccurs" type="integer" default="1" />
+<attribute name="maxOccurs" type="string" />
+</attributeGroup>
+<group name="attributeList">
+<all>
+<element name="attribute" type="attribute" />
+<element name="attributeGroup" type="attributeGroup" />
+</all>
+</group>
+</schema>
