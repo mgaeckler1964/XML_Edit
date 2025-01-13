@@ -31,6 +31,7 @@
 
 //---------------------------------------------------------------------------
 #include <winlib/xmlEditorChild.h>
+#include <winlib/messages.h>
 
 #include <vcl.h>
 
@@ -71,7 +72,7 @@ void __fastcall TXmlViewerForm::FormResize(TObject *)
 //---------------------------------------------------------------------------
 void TXmlViewerForm::XmlItemClick( const TMessage &msg )
 {
-	if( msg.Msg == WM_XML_ITEM_CLICK )
+	if( msg.Msg == winlib::WM_XML_ITEM_CLICK )
 	{
 		viewerInstance->setPosition( (void *)msg.LParam );
 	}
@@ -80,7 +81,7 @@ void TXmlViewerForm::XmlItemClick( const TMessage &msg )
 //---------------------------------------------------------------------------
 void TXmlViewerForm::XmlItemChanged( const TMessage &msg )
 {
-	if( msg.Msg == WM_XML_ITEM_CHANGED )
+	if( msg.Msg == winlib::WM_XML_ITEM_CHANGED )
 		viewerInstance->setChanged( (void *)msg.LParam );
 }
 //---------------------------------------------------------------------------
@@ -133,10 +134,10 @@ void __fastcall TXmlViewerForm::Dispatch(void *Message)
 {
 	switch( ((PMessage)Message)->Msg )
 	{
-		case WM_XML_ITEM_CLICK:
+		case winlib::WM_XML_ITEM_CLICK:
 			XmlItemClick(*((TMessage *)Message));
 			break;
-		case WM_XML_ITEM_CHANGED:
+		case winlib::WM_XML_ITEM_CHANGED:
 			XmlItemChanged(*((TMessage *)Message));
 			break;
 		case CM_DIALOGKEY:
