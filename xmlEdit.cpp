@@ -49,9 +49,9 @@ USEFORM("cssStyleFrm.cpp", cssStyleForm);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE hInstance, HINSTANCE , LPSTR cmdLine, int)
 {
-	winlib::Application theVclApp;
+	doEnableLogEx(gakLogging::llInfo);
 
-	doDisableLog();
+	winlib::Application theVclApp;
 
 	theVclApp.setInstance( hInstance );
 
