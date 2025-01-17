@@ -47,34 +47,34 @@ TXmlViewerForm *XmlViewerForm;
 //---------------------------------------------------------------------------
 __fastcall TXmlViewerForm::TXmlViewerForm(TComponent* Owner)
 	: TForm(Owner),
-	myWinlibHandle( winlib::ForeignWindowFlag, (winlib::BasicWindow*)NULL ),
-	xmlEditor( (winlib::BasicWindow*)NULL )
+	m_myWinlibHandle( winlib::ForeignWindowFlag, (winlib::BasicWindow*)NULL ),
+	m_xmlEditor( (winlib::BasicWindow*)NULL )
 {
-	viewerInstance = NULL;
+	m_viewerInstance = NULL;
 }
 //---------------------------------------------------------------------------
 void __fastcall TXmlViewerForm::FormCreate(TObject *)
 {
 	::SetWindowLong( Handle, GWL_HWNDPARENT, NULL );
-	xmlEditor.sizeNmove(
+	m_xmlEditor.sizeNmove(
 		0, PanelToolBar->Height,
 		ClientWidth, ClientHeight-PanelToolBar->Height
 	);
-	myWinlibHandle.setHandle( this );
-	xmlEditor.create( &myWinlibHandle );
+	m_myWinlibHandle.setHandle( this );
+	m_xmlEditor.create( &m_myWinlibHandle );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TXmlViewerForm::FormResize(TObject *)
 {
-	xmlEditor.resize( ClientWidth, ClientHeight-PanelToolBar->Height );
+	m_xmlEditor.resize( ClientWidth, ClientHeight-PanelToolBar->Height );
 }
 //---------------------------------------------------------------------------
 void TXmlViewerForm::XmlItemClick( const TMessage &msg )
 {
 	if( msg.Msg == winlib::WM_XML_ITEM_CLICK )
 	{
-		viewerInstance->setPosition( (void *)msg.LParam );
+		m_viewerInstance->setPosition( (void *)msg.LParam );
 	}
 }
 
@@ -82,7 +82,9 @@ void TXmlViewerForm::XmlItemClick( const TMessage &msg )
 void TXmlViewerForm::XmlItemChanged( const TMessage &msg )
 {
 	if( msg.Msg == winlib::WM_XML_ITEM_CHANGED )
-		viewerInstance->setChanged( (void *)msg.LParam );
+	{
+		m_viewerInstance->setChanged( (void *)msg.LParam );
+	}
 }
 //---------------------------------------------------------------------------
 void TXmlViewerForm::DialogKeyDown( TMessage &msg )
@@ -94,38 +96,42 @@ void TXmlViewerForm::DialogKeyDown( TMessage &msg )
 void __fastcall TXmlViewerForm::CheckBoxXmlFramesClick(TObject *)
 {
 	if( CheckBoxXmlFrames->Checked )
-		xmlEditor.enableXmlFrames();
+	{
+		m_xmlEditor.enableXmlFrames();
+	}
 	else
-		xmlEditor.disableXmlFrames();
+	{
+		m_xmlEditor.disableXmlFrames();
+	}
 }
 //---------------------------------------------------------------------------
-void XML_GUI_VIEWER::handlePositionChange( void *, void *position )
+void XmlGuiViewer::handlePositionChange( void *, void *position )
 {
-	theViewer->showElement( position );
+	m_viewer->showElement( position );
 }
 //---------------------------------------------------------------------------
-void XML_GUI_VIEWER::handleChange( void *, void *item )
+void XmlGuiViewer::handleChange( void *, void *item )
 {
-	theViewer->refresh( item );
+	m_viewer->refresh( item );
 }
 //---------------------------------------------------------------------------
-void XML_GUI_VIEWER::handleNew( void *, void * )
+void XmlGuiViewer::handleNew( void *, void * )
 {
-	theViewer->refresh( NULL );
+	m_viewer->refresh( NULL );
 }
 //---------------------------------------------------------------------------
-void XML_GUI_VIEWER::handleDelete( void *, void * )
+void XmlGuiViewer::handleDelete( void *, void * )
 {
-	theViewer->refresh( NULL );
+	m_viewer->refresh( NULL );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TXmlViewerForm::FormClose(TObject *, TCloseAction &Action)
 {
-	if( viewerInstance )
+	if( m_viewerInstance )
 	{
-		delete viewerInstance;
-		viewerInstance = NULL;
+		delete m_viewerInstance;
+		m_viewerInstance = NULL;
 	}
 	Action = caHide;
 }
@@ -152,7 +158,7 @@ void __fastcall TXmlViewerForm::Dispatch(void *Message)
 
 void __fastcall TXmlViewerForm::FormActivate(TObject *)
 {
-	xmlEditor.focus();
+	m_xmlEditor.focus();
 }
 //---------------------------------------------------------------------------
 

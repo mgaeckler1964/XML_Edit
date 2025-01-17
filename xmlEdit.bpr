@@ -40,8 +40,8 @@
       -I$(BCB)\include -I$(BCB)\include\vcl -I..\gaklib\include -I.. 
       -Ie:\openssl\include\. -I&quot;C:\Program Files (x86)\OpenSSL\include\.&quot; 
       -src_suffix cpp -DNDEBUG -boa"/>
-    <CFLAG1 value="-O2 -H=..\..\object\xmlEdit\xmlEdit.csm -Hc -w -Vx -Ve -X- -a8 -6 -b- -d 
-      -k- -vi -c -tW -tWM"/>
+    <CFLAG1 value="-O2 -H=..\..\object\xmlEdit\xmlEdit.csm -Hc -Q -w -Vx -Ve -X- -a8 -6 -b- 
+      -d -k- -vi -c -tW -tWM"/>
     <PFLAGS value="-N2..\..\object\xmlEdit -N0..\..\object\xmlEdit -$Y- -$L- -$D- -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mx /w2 /zn"/>
@@ -59,7 +59,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=0
-Build=102
+Build=105
 Debug=0
 PreRelease=0
 Special=0
@@ -71,7 +71,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=Martin Gäckler
 FileDescription=XML Editor
-FileVersion=1.0.0.102
+FileVersion=1.0.0.105
 InternalName=XMLEDIT
 LegalCopyright=(c) 2010-2013 by Martin Gäckler / Linz / Austria
 LegalTrademarks=
@@ -131,7 +131,7 @@ RemotePath=
 RemoteDebug=0
 
 [Compiler]
-ShowInfoMsgs=0
+ShowInfoMsgs=1
 LinkDebugVcl=1
 LinkCGLIB=0
 

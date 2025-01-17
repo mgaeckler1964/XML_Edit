@@ -52,15 +52,14 @@ class TXmlViewerForm;
 
 #pragma option -RT-
 
-class XML_GUI_VIEWER : public gak::DocumentViewer
+class XmlGuiViewer : public gak::DocumentViewer
 {
-	TXmlViewerForm	*theViewer;
+	TXmlViewerForm	*m_viewer;
 
 	public:
-	XML_GUI_VIEWER( gak::ChangeManager *manager, TXmlViewerForm *theViewer)
-	: gak::DocumentViewer( manager )
+	XmlGuiViewer( gak::ChangeManager *manager, TXmlViewerForm *theViewer)
+	: gak::DocumentViewer( manager ), m_viewer(theViewer)
 	{
-		this->theViewer = theViewer;
 	}
 	void handlePositionChange( void *document, void *position );
 	void handleChange( void *document, void *item );
@@ -80,10 +79,10 @@ __published:	// IDE-managed Components
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall FormActivate(TObject *Sender);
 private:	// User declarations
-	XML_GUI_VIEWER				*viewerInstance;
-	winlib::BasicWindow			myWinlibHandle;
-	winlib::XMLeditorChild		xmlEditor;
-	gak::xml::Document			*theDocument;
+	XmlGuiViewer				*m_viewerInstance;
+	winlib::BasicWindow			m_myWinlibHandle;
+	winlib::XMLeditorChild		m_xmlEditor;
+	gak::xml::Document			*m_document;
 
 	void XmlItemClick( const TMessage &msg );
 	void XmlItemChanged( const TMessage &msg );
@@ -94,30 +93,38 @@ public:		// User declarations
 	void setDocument( gak::xml::Document *newDocument, gak::ChangeManager *manager )
 	{
 		doEnterFunction("TXmlViewerForm::setDocument");
-		theDocument = newDocument;
+		m_document = newDocument;
 
-		if( viewerInstance )
-			delete viewerInstance;
-		viewerInstance = new XML_GUI_VIEWER( manager, this );
+		if( m_viewerInstance )
+		{
+			delete m_viewerInstance;
+		}
+		m_viewerInstance = new XmlGuiViewer( manager, this );
 
 		AnsiString newCaption = "XML Viewer ";
 		newCaption += (const char *)newDocument->getFilename();
 		Caption = newCaption;
 
-		xmlEditor.setDocument( newDocument );
+		m_xmlEditor.setDocument( newDocument );
 	}
 	void refresh( void *item )
 	{
 		if( item
 		&& dynamic_cast<gak::xml::XmlText*>( static_cast<gak::xml::Element*>(item ) ) )
-			xmlEditor.refresh();
+		{
+			m_xmlEditor.refresh();
+		}
 		else
-			xmlEditor.setDocument( theDocument );
+		{
+			m_xmlEditor.setDocument( m_document );
+		}
 	}
 	void showElement( void *item )
 	{
 		if( item )
-			xmlEditor.showElement( static_cast<gak::xml::Element*>( item  ) );
+		{
+			m_xmlEditor.showElement( static_cast<gak::xml::Element*>( item  ) );
+		}
 	}
 	virtual void __fastcall Dispatch(void *Message);
 };
