@@ -54,8 +54,8 @@ using namespace xml;
 #pragma resource "*.dfm"
 TxmlEditorFrame *xmlEditorFrame;
 //---------------------------------------------------------------------------
-TXmlDocLoad					XML_MY_SCHEMA_MANAGER::xmlDocLoadFunction = NULL;
-TSchemaFile4NamespaceCB		XML_MY_SCHEMA_MANAGER::schemaFile4NamespaceCB = NULL;
+TXmlDocLoad					XmlMySchemaManager::xmlDocLoadFunction = NULL;
+TSchemaFile4NamespaceCB		XmlMySchemaManager::schemaFile4NamespaceCB = NULL;
 TPlainTextLoad				TxmlEditorFrame::fileLoader = NULL;
 
 //---------------------------------------------------------------------------
@@ -68,9 +68,9 @@ class MyStringGrid : public TStringGrid
 	}
 };
 //---------------------------------------------------------------------------
-Document *XML_MY_SCHEMA_MANAGER::loadSchemaFile( const STRING &schemaFile )
+Document *XmlMySchemaManager::loadSchemaFile( const STRING &schemaFile )
 {
-	doEnterFunction("XML_MY_SCHEMA_MANAGER::loadSchemaFile");
+	doEnterFunction("XmlMySchemaManager::loadSchemaFile");
 	doLogValue( schemaFile );
 
 	xml::Document	*theSchemaDoc = NULL;
@@ -83,7 +83,7 @@ Document *XML_MY_SCHEMA_MANAGER::loadSchemaFile( const STRING &schemaFile )
 	return theSchemaDoc;
 }
 //---------------------------------------------------------------------------
-STRING XML_MY_SCHEMA_MANAGER::getSchemaFile4Namespace( const STRING &nameSpace )
+STRING XmlMySchemaManager::getSchemaFile4Namespace( const STRING &nameSpace )
 {
 	STRING schemaFile = xml::SchemaManager::getSchemaFile4Namespace( nameSpace );
 
@@ -1740,24 +1740,24 @@ void __fastcall TxmlEditorFrame::ExpandClick(TObject *)
 	}
 }
 //---------------------------------------------------------------------------
-void XML_TREE_VIEWER::handlePositionChange( void *, void *position )
+void XmlTreeViewer::handlePositionChange( void *, void *position )
 {
 	theViewer->selectXmlElement( static_cast<xml::Element*>(position) );
 }
 //---------------------------------------------------------------------------
-void XML_TREE_VIEWER::handleChange( void *, void *item )
+void XmlTreeViewer::handleChange( void *, void *item )
 {
 	if( item )
 		theViewer->refreshValue( static_cast<xml::Element*>(item) );
 }
 //---------------------------------------------------------------------------
-void XML_TREE_VIEWER::handleNew( void *, void *item )
+void XmlTreeViewer::handleNew( void *, void *item )
 {
 	if( item )
 		theViewer->refreshValue( static_cast<xml::Element*>(item) );
 }
 //---------------------------------------------------------------------------
-void XML_TREE_VIEWER::handleDelete( void *, void *item )
+void XmlTreeViewer::handleDelete( void *, void *item )
 {
 	if( item )
 		theViewer->refreshValue( static_cast<xml::Element*>(item) );

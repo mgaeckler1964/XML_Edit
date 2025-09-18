@@ -63,13 +63,13 @@ typedef gak::xml::Document * (*TXmlDocLoad)( const gak::STRING &pathName );
 typedef gak::STRING (*TPlainTextLoad)( const gak::STRING &pathName );
 typedef gak::STRING (*TSchemaFile4NamespaceCB)( const gak::STRING &nameSpace );
 
-class XML_MY_SCHEMA_MANAGER : public gak::xml::SchemaManager
+class XmlMySchemaManager : public gak::xml::SchemaManager
 {
 	static TXmlDocLoad					xmlDocLoadFunction;
 	static TSchemaFile4NamespaceCB		schemaFile4NamespaceCB;
 
 	public:
-//	XML_MY_SCHEMA_MANAGER()	{}
+//	XmlMySchemaManager() {}		/// TODO check why?
 	virtual gak::STRING getSchemaFile4Namespace( const gak::STRING &nameSpace );
 	virtual gak::xml::Document *loadSchemaFile( const gak::STRING &schemaFile );
 
@@ -83,12 +83,12 @@ class XML_MY_SCHEMA_MANAGER : public gak::xml::SchemaManager
 	}
 };
 
-class XML_TREE_VIEWER : public gak::DocumentViewer
+class XmlTreeViewer : public gak::DocumentViewer
 {
 	TxmlEditorFrame	*theViewer;
 
 	public:
-	XML_TREE_VIEWER( gak::ChangeManager *manager, TxmlEditorFrame *theViewer)
+	XmlTreeViewer( gak::ChangeManager *manager, TxmlEditorFrame *theViewer)
 	: gak::DocumentViewer( manager )
 	{
 		this->theViewer = theViewer;
@@ -186,7 +186,7 @@ private:	// Anwender-Deklarationen
 
 	TStyleChanged			styleChangedCB;
 	TXmlSchemaChanged		schemaChangedCB;
-	XML_MY_SCHEMA_MANAGER	schemaManager;
+	XmlMySchemaManager		schemaManager;
 	gak::css::Rules			*cssRules;
 
 	void addAttributeRow( void )
@@ -263,7 +263,7 @@ public:		// Anwender-Deklarationen
 		doEnterFunction("TxmlEditorFrame::initViewer");
 		if( viewerInstance )
 			delete viewerInstance;
-		viewerInstance = new XML_TREE_VIEWER( manager, this );
+		viewerInstance = new XmlTreeViewer( manager, this );
 		this->cssRules = cssRules;
 	}
 	void clear( void );
