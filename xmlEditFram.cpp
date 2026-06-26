@@ -629,8 +629,6 @@ void TxmlEditorFrame::setDocument(const XmlDocPtr &newDocument, bool htmlMode )
 	if( m_theDocument )
 	{
 		XmlTreeView->Items->Clear();
-		delete m_theDocument;
-		m_theDocument = nullptr;
 	}
 
 	m_schemaManager.clearValidators();
@@ -711,7 +709,6 @@ void TxmlEditorFrame::clear()
 	if( m_theDocument )
 	{
 		XmlTreeView->Items->Clear();
-		delete m_theDocument;
 		m_theDocument = nullptr;
 	}
 	*m_viewerInstance = false;
