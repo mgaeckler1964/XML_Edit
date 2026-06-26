@@ -1,21 +1,22 @@
 /*
 		Project:		XML Editor
-		Module:			
-		Description:	
+		Module:			xmlEditFram.cpp
+		Description:	The xml editor frame with tree view, attribute view and
+						text view
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 2010-2026 Martin Gäckler
 
-		This program is free software: you can redistribute it and/or modify  
-		it under the terms of the GNU General Public License as published by  
+		This program is free software: you can redistribute it and/or modify
+		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, version 3.
 
-		You should have received a copy of the GNU General Public License 
+		You should have received a copy of the GNU General Public License
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -54,15 +55,15 @@ using namespace xml;
 #pragma resource "*.dfm"
 TxmlEditorFrame *xmlEditorFrame;
 //---------------------------------------------------------------------------
-TXmlDocLoad					XmlMySchemaManager::xmlDocLoadFunction = NULL;
-TSchemaFile4NamespaceCB		XmlMySchemaManager::schemaFile4NamespaceCB = NULL;
-TPlainTextLoad				TxmlEditorFrame::fileLoader = NULL;
+TXmlDocLoad					XmlMySchemaManager::s_xmlDocLoadFunction = nullptr;
+TSchemaFile4NamespaceCB		XmlMySchemaManager::s_schemaFile4NamespaceCB = nullptr;
+TPlainTextLoad				TxmlEditorFrame::s_fileLoader = nullptr;
 
 //---------------------------------------------------------------------------
 class MyStringGrid : public TStringGrid
 {
 	public:
-	TInplaceEdit *GetEditor( void ) const
+	TInplaceEdit *GetEditor() const
 	{
 		return InplaceEditor;
 	}
@@ -73,9 +74,9 @@ Document *XmlMySchemaManager::loadSchemaFile( const STRING &schemaFile )
 	doEnterFunction("XmlMySchemaManager::loadSchemaFile");
 	doLogValue( schemaFile );
 
-	xml::Document	*theSchemaDoc = NULL;
-	if( xmlDocLoadFunction )
-		theSchemaDoc = xmlDocLoadFunction( schemaFile );
+	xml::Document	*theSchemaDoc = nullptr;
+	if( s_xmlDocLoadFunction )
+		theSchemaDoc = s_xmlDocLoadFunction( schemaFile );
 
 	if( !theSchemaDoc )
 		theSchemaDoc = xml::SchemaManager::loadSchemaFile( schemaFile );
@@ -87,8 +88,8 @@ STRING XmlMySchemaManager::getSchemaFile4Namespace( const STRING &nameSpace )
 {
 	STRING schemaFile = xml::SchemaManager::getSchemaFile4Namespace( nameSpace );
 
-	if( schemaFile.isEmpty() && schemaFile4NamespaceCB )
-		schemaFile = schemaFile4NamespaceCB( nameSpace );
+	if( schemaFile.isEmpty() && s_schemaFile4NamespaceCB )
+		schemaFile = s_schemaFile4NamespaceCB( nameSpace );
 
 	return schemaFile;
 }
@@ -96,11 +97,10 @@ STRING XmlMySchemaManager::getSchemaFile4Namespace( const STRING &nameSpace )
 __fastcall TxmlEditorFrame::TxmlEditorFrame(TComponent* Owner)
 	: TFrame(Owner)
 {
-	htmlMode = false;
-	theDocument = NULL;
-	viewerInstance = NULL;
-	styleChangedCB = NULL;
-	schemaManager.setDefaultPath( Application->ExeName.c_str() );
+	m_htmlMode = false;
+	m_theDocument = nullptr;
+	m_styleChangedCB = nullptr;
+	m_schemaManager.setDefaultPath( Application->ExeName.c_str() );
 }
 //---------------------------------------------------------------------------
 bool TxmlEditorFrame::refreshValue( xml::Element *theItem )
@@ -112,7 +112,7 @@ bool TxmlEditorFrame::refreshValue( xml::Element *theItem )
 	if( Node )
 	{
 		xml::Element	*theElement = static_cast<xml::Element *>(Node->Data);
-		if( theElement && (theElement == theItem || theItem == NULL) )
+		if( theElement && (theElement == theItem || theItem == nullptr) )
 		{
 			bool wantValue =
 				!dynamic_cast<xml::Document*>(theElement)
@@ -124,7 +124,7 @@ bool TxmlEditorFrame::refreshValue( xml::Element *theItem )
 			STRING value =
 				wantValue ?
 					theElement->getValue( xml::PLAIN_MODE ) :
-					theElement->generate( htmlMode ? xml::HTML_MODE : xml::XML_MODE )
+					theElement->generate( m_htmlMode ? xml::HTML_MODE : xml::XML_MODE )
 			;
 
 			if( !value.isEmpty() )
@@ -186,7 +186,7 @@ TTreeNode *TxmlEditorFrame::addNode(
 		return newNode;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 //---------------------------------------------------------------------------
@@ -282,7 +282,7 @@ void __fastcall TxmlEditorFrame::XmlTreeViewChange(TObject *,
 		StatusBar->SimpleText = (const char *)thePath;
 
 		if( !XmlTreeView->Tag )
-			viewerInstance->setPosition( theElement );
+			m_viewerInstance->setPosition( theElement );
 	}
 	else
 		StatusBar->SimpleText = "";
@@ -309,7 +309,7 @@ void __fastcall TxmlEditorFrame::XmlTreeViewEdited(TObject *,
 
 		S = (const char *)newTag;
 
-		viewerInstance->setChanged( theElement ); 
+		m_viewerInstance->setChanged( theElement ); 
 	}
 }
 //---------------------------------------------------------------------------
@@ -337,7 +337,7 @@ void __fastcall TxmlEditorFrame::XmlTreeViewDragOver(TObject *,
 				&& !dynamic_cast<xml::DocType*>(theSource) )
 				{
 					Accept = true;
-					while( (theTarget = theTarget->getParent()) != NULL )
+					while( (theTarget = theTarget->getParent()) != nullptr )
 						if( theTarget == theSource )
 						{
 							Accept = false;
@@ -364,7 +364,7 @@ void __fastcall TxmlEditorFrame::XmlTreeViewDragDrop(TObject *,
 			Selected->MoveTo( node, naAddChild );
 			theElement->remove();
 			newParent->addObject( theElement );
-			viewerInstance->setChanged( theElement ); 
+			m_viewerInstance->setChanged( theElement ); 
 		}
 	}
 }
@@ -385,7 +385,7 @@ void __fastcall TxmlEditorFrame::ValueMemoChange(TObject *)
 				STRING newValue = ValueMemo->Text.c_str();
 				newValue.replaceLineEnds( RL_END_LF );
 				theElement->setValue( newValue );
-				viewerInstance->setChanged( theElement ); 
+				m_viewerInstance->setChanged( theElement );
 			}
 		}
 	}
@@ -443,7 +443,7 @@ void __fastcall TxmlEditorFrame::AttributeGridSetEditText(TObject *,
 								}
 								theElement->setAttributeName( attrIdx, sValue );
 							}
-							viewerInstance->setChanged( theElement );
+							m_viewerInstance->setChanged( theElement );
 						}
 					}
 					else
@@ -453,11 +453,11 @@ void __fastcall TxmlEditorFrame::AttributeGridSetEditText(TObject *,
 							AttributeGrid->Cells[0][ARow] = "new";
 							theElement->setStringAttribute( "new", sValue );
 							addAttributeRow();
-							viewerInstance->setChanged( theElement );
+							m_viewerInstance->setChanged( theElement );
 						}
 						if( attrIdx < numAttr || !sValue.isEmpty() )
 						{
-							viewerInstance->setChanged( theElement );
+							m_viewerInstance->setChanged( theElement );
 							theElement->setStringAttribute( attrIdx, sValue );
 
 							// replaint tree
@@ -521,7 +521,7 @@ void __fastcall TxmlEditorFrame::AttributeGridKeyUp(TObject *,
 
 						addAttributeRow();
 						refreshValue();
-						viewerInstance->setChanged( theElement );
+						m_viewerInstance->setChanged( theElement );
 					}
 					else if( Key == VK_DELETE && Shift.Contains( ssCtrl ) )
 					{
@@ -555,7 +555,7 @@ void __fastcall TxmlEditorFrame::AttributeGridKeyUp(TObject *,
 							}
 						}
 						refreshValue();
-						viewerInstance->setChanged( theElement );
+						m_viewerInstance->setChanged( theElement );
 					}
 				}
 			}
@@ -616,36 +616,36 @@ void __fastcall TxmlEditorFrame::AttributeGridDrawCell(TObject *,
 }
 
 //---------------------------------------------------------------------------
-void TxmlEditorFrame::setDocument(xml::Document *newDocument, bool htmlMode )
+void TxmlEditorFrame::setDocument(const XmlDocPtr &newDocument, bool htmlMode )
 {
 	doEnterFunction("TxmlEditorFrame::setDocument");
 
 	STRING			newStylesheetType, newStylesheetFile;
 
-	schemaFile = "";
-	filename = newDocument->getFilename();
+	m_schemaFile.release();
+	m_filename = newDocument->getFilename();
 
-	*viewerInstance = false;
-	if( theDocument )
+	*m_viewerInstance = false;
+	if( m_theDocument )
 	{
 		XmlTreeView->Items->Clear();
-		delete theDocument;
-		theDocument = NULL;
+		delete m_theDocument;
+		m_theDocument = nullptr;
 	}
 
-	schemaManager.clearValidators();
+	m_schemaManager.clearValidators();
 
 	if( newDocument )
 	{
-		theDocument = newDocument;
+		m_theDocument = newDocument;
 
 		XmlTreeView->Items->BeginUpdate();
 		TTreeNode *node = XmlTreeView->Items->Add(
-			NULL, static_cast<const char *>(filename)
+			nullptr, m_filename.c_str()
 		);
-		node->Data = theDocument;
+		node->Data = m_theDocument;
 
-		buildTree( node, theDocument );
+		buildTree( node, m_theDocument );
 
 		XmlTreeView->Items->Item[0]->Expand(false);
 		XmlTreeView->Items->EndUpdate();
@@ -654,15 +654,15 @@ void TxmlEditorFrame::setDocument(xml::Document *newDocument, bool htmlMode )
 		XmlTreeView->Selected = node;
 		XmlTreeView->Tag = 0;
 
-		newStylesheetFile = theDocument->getStyleSheet( &newStylesheetType );
-		schemaFile = schemaManager.scanDocument( theDocument );
+		newStylesheetFile = m_theDocument->getStyleSheet( &newStylesheetType );
+		m_schemaFile = m_schemaManager.scanDocument( m_theDocument );
 	}
 
-	this->htmlMode = htmlMode;
+	m_htmlMode = htmlMode;
 
 	setStylesheetFile( newStylesheetFile, newStylesheetType );
-	if( schemaChangedCB )
-		schemaChangedCB( schemaFile );
+	if( m_schemaChangedCB )
+		m_schemaChangedCB( m_schemaFile );
 }
 
 //---------------------------------------------------------------------------
@@ -690,47 +690,47 @@ void TxmlEditorFrame::OpenStream(std::istream *theInput, const STRING &fileName 
 		htmlMode = false;
 	}
 
-	setDocument( newDocument, htmlMode );
+	setDocument( XmlDocPtr(newDocument), htmlMode );
 }
 //---------------------------------------------------------------------------
 void TxmlEditorFrame::SaveFile(const STRING &fileName)
 {
-	this->filename = fileName;
+	m_filename = fileName;
 	XmlTreeView->Items->Item[0]->Text = (const char *)fileName;
-	*viewerInstance = false;
+	*m_viewerInstance = false;
 	std::ofstream fp( fileName );
 	if( fp.is_open() )
 	{
-		STRING xmlCode = theDocument->generate( xml::XML_MODE );
+		STRING xmlCode = m_theDocument->generate( xml::XML_MODE );
 		fp << xmlCode;
 	}
 }
 //---------------------------------------------------------------------------
-void TxmlEditorFrame::clear( void )
+void TxmlEditorFrame::clear()
 {
-	if( theDocument )
+	if( m_theDocument )
 	{
 		XmlTreeView->Items->Clear();
-		delete theDocument;
-		theDocument = NULL;
+		delete m_theDocument;
+		m_theDocument = nullptr;
 	}
-	*viewerInstance = false;
+	*m_viewerInstance = false;
 }
 //---------------------------------------------------------------------------
-void TxmlEditorFrame::CreateDoc( void )
+void TxmlEditorFrame::CreateDoc()
 {
 	clear();
 
-	theDocument = new xml::Document("");
-	theDocument->addObject( new xml::Declaration() );
+	m_theDocument = new xml::Document("");
+	m_theDocument->addObject( new xml::Declaration() );
 
-	theDocument->addObject( new xml::DocType("root SYSTEM \"root.dtd\"") );
-	theDocument->addObject( new xml::Any( "root" ) );
+	m_theDocument->addObject( new xml::DocType("root SYSTEM \"root.dtd\"") );
+	m_theDocument->addObject( new xml::Any( "root" ) );
 
-	TTreeNode *node = XmlTreeView->Items->Add( NULL, "untitled" );
-	node->Data = theDocument;
+	TTreeNode *node = XmlTreeView->Items->Add( nullptr, "untitled" );
+	node->Data = m_theDocument;
 
-	buildTree( node, theDocument );
+	buildTree( node, m_theDocument );
 
 	XmlTreeView->FullExpand();
 	XmlTreeView->Selected = node;
@@ -759,7 +759,7 @@ void __fastcall TxmlEditorFrame::TreeViewPopupClick(TObject *Sender)
 						dynamic_cast<xml::Any *>(theElement)
 						&& !dynamic_cast<xml::Mark *>(theElement)
 						&& parent == static_cast<xml::XmlContainer*>(
-							theDocument
+							m_theDocument
 						))
 					)
 					{
@@ -771,7 +771,7 @@ void __fastcall TxmlEditorFrame::TreeViewPopupClick(TObject *Sender)
 						parent->removeObject( theElement );
 						delete theElement;
 
-						viewerInstance->setDelete( theElement );
+						m_viewerInstance->setDelete( theElement );
 					}
 				}
 				else if( Sender == DeleteWithoutChildren )
@@ -784,7 +784,7 @@ void __fastcall TxmlEditorFrame::TreeViewPopupClick(TObject *Sender)
 						dynamic_cast<xml::Any*>(theElement)
 						&& !dynamic_cast<xml::Mark*>(theElement)
 						&& parent == static_cast<xml::XmlContainer*>(
-							theDocument
+							m_theDocument
 						))
 					)
 					{
@@ -814,7 +814,7 @@ void __fastcall TxmlEditorFrame::TreeViewPopupClick(TObject *Sender)
 						XmlTreeView->Items->Delete( Selected );
 						parent->removeObject( theElement );
 						delete theElement;
-						viewerInstance->setDelete( theElement );
+						m_viewerInstance->setDelete( theElement );
 					}
 				}
 				else if( Sender == CloneElement )
@@ -827,7 +827,7 @@ void __fastcall TxmlEditorFrame::TreeViewPopupClick(TObject *Sender)
 						TTreeNode *newNode = addNode( parentNode, newElement );
 						buildTree( newNode, newElement );
 						newNode->Expand( false );
-						viewerInstance->setNew( newElement );
+						m_viewerInstance->setNew( newElement );
 					}
 				}
 				else if( Sender == InsElement )
@@ -845,7 +845,7 @@ void __fastcall TxmlEditorFrame::TreeViewPopupClick(TObject *Sender)
 						TTreeNode *newNode = addNode( Selected, newElement );
 						Selected->Expand( false );
 						newNode->EditText();
-						viewerInstance->setNew( newElement );
+						m_viewerInstance->setNew( newElement );
 					}
 				}
 				else if( Sender == InsTextPCDATA )
@@ -859,7 +859,7 @@ void __fastcall TxmlEditorFrame::TreeViewPopupClick(TObject *Sender)
 						Selected->Expand( false );
 						XmlTreeView->Selected = newNode;
 						ValueMemo->SetFocus();
-						viewerInstance->setNew( newElement );
+						m_viewerInstance->setNew( newElement );
 					}
 				}
 				else if( Sender == InsTextCDATA )
@@ -873,7 +873,7 @@ void __fastcall TxmlEditorFrame::TreeViewPopupClick(TObject *Sender)
 						Selected->Expand( false );
 						XmlTreeView->Selected = newNode;
 						ValueMemo->SetFocus();
-						viewerInstance->setNew( newElement );
+						m_viewerInstance->setNew( newElement );
 					}
 				}
 				else if( Sender == InsComment  )
@@ -889,7 +889,7 @@ void __fastcall TxmlEditorFrame::TreeViewPopupClick(TObject *Sender)
 						Selected->Expand( false );
 						XmlTreeView->Selected = newNode;
 						ValueMemo->SetFocus();
-						viewerInstance->setNew( newElement );
+						m_viewerInstance->setNew( newElement );
 					}
 				}
 				else if( Sender == ProcInstruction  )
@@ -908,23 +908,23 @@ void __fastcall TxmlEditorFrame::TreeViewPopupClick(TObject *Sender)
 						Selected->Expand( false );
 						XmlTreeView->Selected = newNode;
 						ValueMemo->SetFocus();
-						viewerInstance->setNew( newElement );
+						m_viewerInstance->setNew( newElement );
 					}
 				}
 				else if( Sender == insXmlStyleSheet  )
 				{
-					if( theDocument  )
+					if( m_theDocument  )
 					{
 						bool found = false;
 						for(
 							size_t i=0;
-							!found && i<theDocument->getNumObjects();
+							!found && i<m_theDocument->getNumObjects();
 							i++
 						)
 						{
 							if(
 								dynamic_cast<xml::StyleSheet*>(
-									theDocument->getElement(i)
+									m_theDocument->getElement(i)
 								)
 							)
 								found = true;
@@ -935,7 +935,7 @@ void __fastcall TxmlEditorFrame::TreeViewPopupClick(TObject *Sender)
 							TTreeNode *newNode = XmlTreeView->Items->Insert(
 								XmlTreeView->Items->Item[2], "?xml-stylesheet"
 							);
-							xml::Element *newElem = theDocument->addObject(
+							xml::Element *newElem = m_theDocument->addObject(
 								new xml::StyleSheet()
 							);
 							newNode->Data = newElem;
@@ -946,7 +946,7 @@ void __fastcall TxmlEditorFrame::TreeViewPopupClick(TObject *Sender)
 							Selected->Expand( false );
 							XmlTreeView->Selected = newNode;
 							ValueMemo->SetFocus();
-							viewerInstance->setNew( newElem );
+							m_viewerInstance->setNew( newElem );
 						}
 					}
 				}
@@ -967,7 +967,7 @@ void __fastcall TxmlEditorFrame::TreeViewPopupClick(TObject *Sender)
 						Selected->Expand( false );
 						XmlTreeView->Selected = newNode;
 						ValueMemo->SetFocus();
-						viewerInstance->setNew( newElem );
+						m_viewerInstance->setNew( newElem );
 					}
 				}
 			}
@@ -992,7 +992,7 @@ void __fastcall TxmlEditorFrame::XmlTreeViewContextPopup(TObject *,
 		if( dynamic_cast<xml::Any*>( theElement )
 		|| dynamic_cast<html::HtmlBase*>( theElement ) )
 		{
-			xml::Validator	*theValidator = NULL;
+			xml::Validator	*theValidator = nullptr;
 			ArrayOfStrings	prefixe, tags;
 
 			theElement->getPrefixe( &prefixe );
@@ -1033,12 +1033,12 @@ void __fastcall TxmlEditorFrame::XmlTreeViewContextPopup(TObject *,
 				}
 				else
 				{
-					theValidator = schemaManager.getValidator4Namespace(
+					theValidator = m_schemaManager.getValidator4Namespace(
 						theElement->getNamespace()
 					);
 					if( theValidator )
 					{
-						if( theElement->getParent() == theDocument )
+						if( theElement->getParent() == m_theDocument )
 							theValidator->getValidSubobjects( &tags );
 						else
 							theValidator->getAllValidSubobjects( &tags );
@@ -1125,7 +1125,7 @@ void __fastcall TxmlEditorFrame::ChangePopupClick(TObject *Sender)
 					if( !newTag.isEmpty() )
 						newTag += ':';
 					newTag += item->Hint.c_str();
-					if( htmlMode )
+					if( m_htmlMode )
 					{
 						html::Factory	theFactory;
 						xml::Element	*newElement = theFactory.createObject(
@@ -1170,7 +1170,7 @@ void __fastcall TxmlEditorFrame::ChangePopupClick(TObject *Sender)
 				}
 
 				refreshValue();
-				*viewerInstance = true;
+				*m_viewerInstance = true;
 
 				xml::Element	*parent = theElement->getPrefixParent();
 				if( parent )
@@ -1182,7 +1182,7 @@ void __fastcall TxmlEditorFrame::ChangePopupClick(TObject *Sender)
 				else
 				{
 					STRING nameSpace = theElement->getNamespace();
-					schemaManager.scanElement( theElement, filename );
+					m_schemaManager.scanElement( theElement, m_filename );
 				}
 			}
 			else if( dynamic_cast<xml::PCData*>(theElement) )
@@ -1222,7 +1222,7 @@ void __fastcall TxmlEditorFrame::ChangePopupClick(TObject *Sender)
 						newNode->Data = theElement;
 						node->Expand( false );
 						node->EditText();
-						*viewerInstance = true;
+						*m_viewerInstance = true;
 					}
 				}
 
@@ -1264,7 +1264,7 @@ void __fastcall TxmlEditorFrame::ChangePopupClick(TObject *Sender)
 						newNode->Data = theElement;
 						node->Expand( false );
 						node->EditText();
-						*viewerInstance = true;
+						*m_viewerInstance = true;
 					}
 				}
 			}
@@ -1312,7 +1312,7 @@ void __fastcall TxmlEditorFrame::AttributePopupClick(TObject *Sender)
 				}
 				AttributeGrid->Cells[AttributeGrid->Col][AttributeGrid->Row] = item->Hint;
 				refreshValue();
-				viewerInstance->setChanged( theElement );
+				m_viewerInstance->setChanged( theElement );
 			}
 		}
 	}
@@ -1397,20 +1397,20 @@ void __fastcall TxmlEditorFrame::AttributeGridContextPopup(TObject *,
 	}
 }
 //---------------------------------------------------------------------------
-STRING TxmlEditorFrame::testDocument( void )
+STRING TxmlEditorFrame::testDocument()
 {
 	STRING	errorText;
 
-	if( theDocument )
+	if( m_theDocument )
 	{
-		bool result = htmlMode
-			? schemaManager.testHTML( theDocument )
-			: schemaManager.testXML( theDocument )
+		bool result = m_htmlMode
+			? m_schemaManager.testHTML( m_theDocument )
+			: m_schemaManager.testXML( m_theDocument )
 		;
 		if( !result )
 		{
-			xml::Element	*errorElement = schemaManager.getErrorElement();
-			errorText = schemaManager.getErrorText();
+			xml::Element	*errorElement = m_schemaManager.getErrorElement();
+			errorText = m_schemaManager.getErrorText();
 			for( int j=0; j<XmlTreeView->Items->Count; j++ )
 			{
 				if(XmlTreeView->Items->Item[j]->Data == errorElement )
@@ -1450,7 +1450,7 @@ void TxmlEditorFrame::Cut( TWinControl *active )
 	if( active == ValueMemo )
 	{
 		ValueMemo->CutToClipboard();
-		*viewerInstance = true;
+		*m_viewerInstance = true;
 	}
 	else if( active == AttributeGrid )
 	{
@@ -1459,14 +1459,14 @@ void TxmlEditorFrame::Cut( TWinControl *active )
 		if( editor )
 		{
 			editor->CutToClipboard();
-			*viewerInstance = true;
+			*m_viewerInstance = true;
 		}
 	}
 	else if( active == XmlTreeView )
 	{
 		Copy( active );
 		TreeViewPopupClick( DeleteChildrenItem );
-		*viewerInstance = true;
+		*m_viewerInstance = true;
 	}
 }
 //---------------------------------------------------------------------------
@@ -1508,7 +1508,7 @@ void TxmlEditorFrame::Paste( TWinControl *active )
 	if( active == ValueMemo )
 	{
 		ValueMemo->PasteFromClipboard();
-		*viewerInstance = true;
+		*m_viewerInstance = true;
 	}
 	else if( active == AttributeGrid )
 	{
@@ -1517,7 +1517,7 @@ void TxmlEditorFrame::Paste( TWinControl *active )
 		if( editor )
 		{
 			editor->PasteFromClipboard();
-			*viewerInstance = true;
+			*m_viewerInstance = true;
 		}
 	}
 	else if( active == XmlTreeView )
@@ -1548,7 +1548,7 @@ void TxmlEditorFrame::Paste( TWinControl *active )
 							theData->remove();
 							element->addObject( theData );
 							node->Expand(false);
-							*viewerInstance = true;
+							*m_viewerInstance = true;
 						}
 					}
 				}
@@ -1613,7 +1613,7 @@ void __fastcall TxmlEditorFrame::XmlTreeViewKeyDown(TObject *,
 					{
 						Selected->MoveTo( sibling, naInsert );
 						theElement->moveTo( theElement->getIndex()-1 );
-						*viewerInstance = true;
+						*m_viewerInstance = true;
 						Key = 0;
 					}
 				}
@@ -1628,7 +1628,7 @@ void __fastcall TxmlEditorFrame::XmlTreeViewKeyDown(TObject *,
 						else
 							Selected->MoveTo( sibling, naAdd );
 						theElement->moveTo( theElement->getIndex()+1 );
-						*viewerInstance = true;
+						*m_viewerInstance = true;
 						Key = 0;
 					}
 				}
@@ -1713,7 +1713,7 @@ void __fastcall TxmlEditorFrame::CreateElementClick(TObject *)
 				XmlTreeView->Items->Delete( Selected );
 				theElement->remove();
 				delete theElement;
-				*viewerInstance = true;
+				*m_viewerInstance = true;
 				newSelected->Expand( true );
 			}
 		}
@@ -1742,25 +1742,25 @@ void __fastcall TxmlEditorFrame::ExpandClick(TObject *)
 //---------------------------------------------------------------------------
 void XmlTreeViewer::handlePositionChange( void *, void *position )
 {
-	theViewer->selectXmlElement( static_cast<xml::Element*>(position) );
+	m_theViewer->selectXmlElement( static_cast<xml::Element*>(position) );
 }
 //---------------------------------------------------------------------------
 void XmlTreeViewer::handleChange( void *, void *item )
 {
 	if( item )
-		theViewer->refreshValue( static_cast<xml::Element*>(item) );
+		m_theViewer->refreshValue( static_cast<xml::Element*>(item) );
 }
 //---------------------------------------------------------------------------
 void XmlTreeViewer::handleNew( void *, void *item )
 {
 	if( item )
-		theViewer->refreshValue( static_cast<xml::Element*>(item) );
+		m_theViewer->refreshValue( static_cast<xml::Element*>(item) );
 }
 //---------------------------------------------------------------------------
 void XmlTreeViewer::handleDelete( void *, void *item )
 {
 	if( item )
-		theViewer->refreshValue( static_cast<xml::Element*>(item) );
+		m_theViewer->refreshValue( static_cast<xml::Element*>(item) );
 }
 //---------------------------------------------------------------------------
 

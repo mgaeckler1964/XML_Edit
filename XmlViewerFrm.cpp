@@ -1,21 +1,21 @@
 /*
 		Project:		XML Editor
-		Module:			
-		Description:	
+		Module:			XmlViewerFrm.coo
+		Description:	The XML renderer form
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 2010-2026 Martin Gäckler
 
-		This program is free software: you can redistribute it and/or modify  
-		it under the terms of the GNU General Public License as published by  
+		This program is free software: you can redistribute it and/or modify
+		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, version 3.
 
-		You should have received a copy of the GNU General Public License 
+		You should have received a copy of the GNU General Public License
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -47,10 +47,9 @@ TXmlViewerForm *XmlViewerForm;
 //---------------------------------------------------------------------------
 __fastcall TXmlViewerForm::TXmlViewerForm(TComponent* Owner)
 	: TForm(Owner),
-	m_myWinlibHandle( winlib::ForeignWindowFlag, (winlib::BasicWindow*)NULL ),
-	m_xmlEditor( (winlib::BasicWindow*)NULL )
+	m_myWinlibHandle( winlib::ForeignWindowFlag, nullptr ),
+	m_xmlEditor( nullptr )
 {
-	m_viewerInstance = NULL;
 }
 //---------------------------------------------------------------------------
 void __fastcall TXmlViewerForm::FormCreate(TObject *)
@@ -117,22 +116,18 @@ void XmlGuiViewer::handleChange( void *, void *item )
 //---------------------------------------------------------------------------
 void XmlGuiViewer::handleNew( void *, void * )
 {
-	m_viewer->refresh( NULL );
+	m_viewer->refresh( nullptr );
 }
 //---------------------------------------------------------------------------
 void XmlGuiViewer::handleDelete( void *, void * )
 {
-	m_viewer->refresh( NULL );
+	m_viewer->refresh( nullptr );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TXmlViewerForm::FormClose(TObject *, TCloseAction &Action)
 {
-	if( m_viewerInstance )
-	{
-		delete m_viewerInstance;
-		m_viewerInstance = NULL;
-	}
+	m_viewerInstance.reset();
 	Action = caHide;
 }
 //---------------------------------------------------------------------------

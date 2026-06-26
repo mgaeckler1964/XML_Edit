@@ -1,21 +1,21 @@
 /*
 		Project:		XML Editor
-		Module:			
-		Description:	
+		Module:			xmlEditFrm.cpp
+		Description:	The main form	
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 2010-2026 Martin Gäckler
 
-		This program is free software: you can redistribute it and/or modify  
-		it under the terms of the GNU General Public License as published by  
+		This program is free software: you can redistribute it and/or modify
+		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, version 3.
 
-		You should have received a copy of the GNU General Public License 
+		You should have received a copy of the GNU General Public License
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -75,8 +75,8 @@ void TXmlEditForm::schemaChangedCB( const STRING &schemaFile )
 //---------------------------------------------------------------------------
 void TXmlEditForm::OpenFile( const STRING &fileName )
 {
-	this->filename = fileName;
-	xmlEditorFrame->OpenFile( filename );
+	m_filename = fileName;
+	xmlEditorFrame->OpenFile( m_filename );
 	STRING nCaption = "XML Editor ";
 	nCaption += fileName;
 	Caption = (const char *)nCaption;
@@ -226,7 +226,7 @@ void __fastcall TXmlEditForm::New1Click(TObject *Sender)
 /***/			return;
 		}
 	}
-	filename = "";
+	m_filename.release();
 	xmlEditorFrame->CreateDoc();
 	MenuFileSave->Enabled = false;
 	MenuFileSaveAs->Enabled = true;
@@ -237,7 +237,7 @@ void __fastcall TXmlEditForm::MenuFileSaveAsClick(TObject *Sender)
 {
 	if( SaveDialog->Execute() )
 	{
-		filename = SaveDialog->FileName.c_str();
+		m_filename = SaveDialog->FileName.c_str();
 
 		MenuFileSaveClick( Sender );
 	}
@@ -246,11 +246,11 @@ void __fastcall TXmlEditForm::MenuFileSaveAsClick(TObject *Sender)
 
 void __fastcall TXmlEditForm::MenuFileSaveClick(TObject *Sender)
 {
-	if( filename.isEmpty() )
+	if( m_filename.isEmpty() )
 		MenuFileSaveAsClick( Sender );
 	else
 	{
-		xmlEditorFrame->SaveFile( filename );
+		xmlEditorFrame->SaveFile( m_filename );
 	}
 }
 //---------------------------------------------------------------------------
@@ -281,14 +281,7 @@ void __fastcall TXmlEditForm::FormCloseQuery(TObject *Sender,
 //---------------------------------------------------------------------------
 void __fastcall TXmlEditForm::FormDestroy(TObject *)
 {
-/*
 	doEnterFunction("TXmlEditForm::FormDestroy");
-	if( theDocument )
-	{
-		delete theDocument;
-		theDocument = NULL;
-	}
-*/
 }
 //---------------------------------------------------------------------------
 
@@ -376,7 +369,7 @@ void __fastcall TXmlEditForm::Transform2Click(TObject *)
 
 				if( htmlDoc )
 					ShellExecute(
-						NULL, "open", resultFile, NULL, NULL, SW_SHOWNORMAL
+						nullptr, "open", resultFile, nullptr, nullptr, SW_SHOWNORMAL
 					); 
 				else
 				{
@@ -399,9 +392,9 @@ void __fastcall TXmlEditForm::FormCreate(TObject *)
 	if( exists( cssFilename ) )
 	{
 		ifstream	istream( cssFilename );
-		editorCssRules.readCssFile( &istream, false );
+		m_editorCssRules.readCssFile( &istream, false );
 	}
-	xmlEditorFrame->initFrame( &theManager, &editorCssRules );
+	xmlEditorFrame->initFrame( &m_theManager, &m_editorCssRules );
 	xmlEditorFrame->setStyleChangedCB( styleChangedCB );
 	xmlEditorFrame->setSchemaChangedCB( schemaChangedCB );
 }
@@ -415,11 +408,11 @@ void __fastcall TXmlEditForm::MenuSchemaRefreshSchemaClick(TObject *)
 
 void __fastcall TXmlEditForm::Renderer1Click(TObject *)
 {
-	Document *theDocument = xmlEditorFrame->getDocument();
+	const XmlDocPtr &theDocument = xmlEditorFrame->getDocument();
 
 	if( theDocument )
 	{
-		XmlViewerForm->setDocument( theDocument, &theManager );
+		XmlViewerForm->setDocument( theDocument, &m_theManager );
 		XmlViewerForm->Show();
 	}
 }

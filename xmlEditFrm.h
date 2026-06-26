@@ -1,21 +1,21 @@
 /*
 		Project:		XML Editor
-		Module:			
-		Description:	
+		Module:			xmlEditFrm.h
+		Description:	The main form
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 2010-2026 Martin Gäckler
 
-		This program is free software: you can redistribute it and/or modify  
-		it under the terms of the GNU General Public License as published by  
+		This program is free software: you can redistribute it and/or modify
+		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, version 3.
 
-		You should have received a copy of the GNU General Public License 
+		You should have received a copy of the GNU General Public License
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -97,9 +97,9 @@ __published:	// IDE-managed Components
 	void __fastcall MenuSchemaRefreshSchemaClick(TObject *Sender);
 	void __fastcall Renderer1Click(TObject *Sender);
 private:	// User declarations
-	gak::STRING			filename;
-	gak::ChangeManager	theManager;
-	gak::css::Rules		editorCssRules;
+	gak::STRING			m_filename;
+	gak::ChangeManager	m_theManager;
+	gak::css::Rules		m_editorCssRules;
 
 	void styleChangedCB(
 		const gak::STRING &styleSheetFile, const gak::STRING &styleSheetType
@@ -107,9 +107,9 @@ private:	// User declarations
 	void schemaChangedCB( const gak::STRING &schemaFile );
 	void OpenFile( const gak::STRING &fileName );
 
-	bool hasChanged( void ) const
+	bool hasChanged() const
 	{
-		return theManager.isChanged();
+		return m_theManager.isChanged();
 	}
 
 public:		// User declarations

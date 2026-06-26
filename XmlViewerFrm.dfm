@@ -1,6 +1,6 @@
 object XmlViewerForm: TXmlViewerForm
-  Left = 350
-  Top = 187
+  Left = 255
+  Top = 822
   Width = 577
   Height = 333
   Caption = 'XmlViewerForm'
@@ -21,7 +21,7 @@ object XmlViewerForm: TXmlViewerForm
   object PanelToolBar: TPanel
     Left = 0
     Top = 0
-    Width = 569
+    Width = 561
     Height = 41
     Align = alTop
     TabOrder = 0

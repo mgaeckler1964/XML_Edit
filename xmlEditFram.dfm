@@ -2,20 +2,20 @@ object xmlEditorFrame: TxmlEditorFrame
   Left = 0
   Top = 0
   Width = 675
-  Height = 493
+  Height = 477
   TabOrder = 0
   object Splitter2: TSplitter
     Left = 217
     Top = 0
     Width = 5
-    Height = 474
+    Height = 458
     Cursor = crHSplit
   end
   object XmlTreeView: TTreeView
     Left = 0
     Top = 0
     Width = 217
-    Height = 474
+    Height = 458
     Align = alLeft
     DragMode = dmAutomatic
     HideSelection = False
@@ -35,7 +35,7 @@ object xmlEditorFrame: TxmlEditorFrame
     Left = 222
     Top = 0
     Width = 453
-    Height = 474
+    Height = 458
     Align = alClient
     TabOrder = 1
     object Splitter1: TSplitter
@@ -71,7 +71,7 @@ object xmlEditorFrame: TxmlEditorFrame
       Left = 1
       Top = 190
       Width = 451
-      Height = 283
+      Height = 267
       Align = alClient
       PopupMenu = ValuePopupMenu
       ScrollBars = ssVertical
@@ -81,7 +81,7 @@ object xmlEditorFrame: TxmlEditorFrame
   end
   object StatusBar: TStatusBar
     Left = 0
-    Top = 474
+    Top = 458
     Width = 675
     Height = 19
     Panels = <>

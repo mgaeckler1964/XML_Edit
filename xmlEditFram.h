@@ -1,21 +1,22 @@
 /*
 		Project:		XML Editor
-		Module:			
-		Description:	
+		Module:			xmlEditFram.h
+		Description:	The xml editor frame with tree view, attribute view and
+						text view
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 2010-2026 Martin Gäckler
 
-		This program is free software: you can redistribute it and/or modify  
-		it under the terms of the GNU General Public License as published by  
+		This program is free software: you can redistribute it and/or modify
+		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, version 3.
 
-		You should have received a copy of the GNU General Public License 
+		You should have received a copy of the GNU General Public License
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -34,7 +35,16 @@
 
 #ifndef xmlEditFramH
 #define xmlEditFramH
+#include <Classes.hpp>
+#include <ComCtrls.hpp>
+#include <Controls.hpp>
+#include <ExtCtrls.hpp>
+#include <Grids.hpp>
+#include <Menus.hpp>
+#include <StdCtrls.hpp>
 //---------------------------------------------------------------------------
+#include <memory>
+
 #include <Classes.hpp>
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
@@ -53,6 +63,7 @@
 #include <gak/xmlValidator.h>
 #include <gak/ChangeManager.h>
 #include <gak/directory.h>
+#include <gak/shared.h>
 
 //---------------------------------------------------------------------------
 class TxmlEditorFrame;
@@ -65,8 +76,8 @@ typedef gak::STRING (*TSchemaFile4NamespaceCB)( const gak::STRING &nameSpace );
 
 class XmlMySchemaManager : public gak::xml::SchemaManager
 {
-	static TXmlDocLoad					xmlDocLoadFunction;
-	static TSchemaFile4NamespaceCB		schemaFile4NamespaceCB;
+	static TXmlDocLoad					s_xmlDocLoadFunction;
+	static TSchemaFile4NamespaceCB		s_schemaFile4NamespaceCB;
 
 	public:
 //	XmlMySchemaManager() {}		/// TODO check why?
@@ -75,23 +86,23 @@ class XmlMySchemaManager : public gak::xml::SchemaManager
 
 	static void setXmlDocLoadFunction( TXmlDocLoad newFunction )
 	{
-		xmlDocLoadFunction = newFunction;
+		s_xmlDocLoadFunction = newFunction;
 	}
 	static void setSchemaFile4NamespaceCB( TSchemaFile4NamespaceCB newCB )
 	{
-		schemaFile4NamespaceCB = newCB;
+		s_schemaFile4NamespaceCB = newCB;
 	}
 };
 
 class XmlTreeViewer : public gak::DocumentViewer
 {
-	TxmlEditorFrame	*theViewer;
+	TxmlEditorFrame	*m_theViewer;
 
 	public:
 	XmlTreeViewer( gak::ChangeManager *manager, TxmlEditorFrame *theViewer)
 	: gak::DocumentViewer( manager )
 	{
-		this->theViewer = theViewer;
+		m_theViewer = theViewer;
 	}
 	void handlePositionChange( void *document, void *position );
 	void handleChange( void *document, void *item );
@@ -105,6 +116,8 @@ typedef void (__closure *TStyleChanged)(
 	const gak::STRING &style, const gak::STRING &stylesheetType
 );
 typedef void (__closure *TXmlSchemaChanged)( const gak::STRING &schema );
+typedef gak::XSharedPointer<gak::xml::Document> XmlDocPtr;
+
 //---------------------------------------------------------------------------
 
 class TxmlEditorFrame : public TFrame
@@ -175,21 +188,21 @@ __published:	// Von der IDE verwaltete Komponenten
 	void __fastcall ExpandClick(TObject *Sender);
 	void __fastcall ShowStylesClick(TObject *Sender);
 private:	// Anwender-Deklarationen
-	bool					htmlMode;
-	gak::xml::Document		*theDocument;
-	gak::STRING				filename, schemaFile;
-	gak::STRING				stylesheetFile, stylesheetType;
+	bool					m_htmlMode;
+	XmlDocPtr				m_theDocument;
+	gak::STRING				m_filename, m_schemaFile;
+	gak::STRING				m_stylesheetFile, m_stylesheetType;
 
-	gak::DocumentViewer		*viewerInstance;
+	std::auto_ptr<gak::DocumentViewer>	m_viewerInstance;
 
-	static TPlainTextLoad	fileLoader;
+	static TPlainTextLoad	s_fileLoader;
 
-	TStyleChanged			styleChangedCB;
-	TXmlSchemaChanged		schemaChangedCB;
-	XmlMySchemaManager		schemaManager;
-	gak::css::Rules			*cssRules;
+	TStyleChanged			m_styleChangedCB;
+	TXmlSchemaChanged		m_schemaChangedCB;
+	XmlMySchemaManager		m_schemaManager;
+	gak::css::Rules			*m_cssRules;
 
-	void addAttributeRow( void )
+	void addAttributeRow()
 	{
 		int newIdx = AttributeGrid->RowCount;
 		AttributeGrid->RowCount++;
@@ -201,59 +214,59 @@ private:	// Anwender-Deklarationen
 		const gak::STRING &stylesheetFile, const gak::STRING &stylesheetType
 	)
 	{
-		this->stylesheetType = stylesheetType;
+		m_stylesheetType = stylesheetType;
 		if( stylesheetFile.isEmpty() )
-			this->stylesheetFile = stylesheetFile;
+			m_stylesheetFile = stylesheetFile;
 		else
-			this->stylesheetFile = makeFullPath( filename, stylesheetFile );
-		if( styleChangedCB )
-			styleChangedCB( this->stylesheetFile, stylesheetType );
+			m_stylesheetFile = makeFullPath( m_filename, stylesheetFile );
+		if( m_styleChangedCB )
+			m_styleChangedCB( m_stylesheetFile, stylesheetType );
 
-		theDocument->setCssRules( *cssRules );
+		m_theDocument->setCssRules( *m_cssRules );
 
-		gak::STRING	tmpName = makeFullPath( filename, "editor.css" );
+		gak::STRING	tmpName = makeFullPath( m_filename, "editor.css" );
 
-		if( fileLoader )
+		if( s_fileLoader )
 		{
-			gak::STRING css = fileLoader( tmpName );
-			theDocument->readCssRules( css, false );
+			gak::STRING css = s_fileLoader( tmpName );
+			m_theDocument->readCssRules( css, false );
 		}
 		else if( exists( tmpName ) )
 		{
 			std::ifstream istream( tmpName );
-			theDocument->readCssRules( &istream, false );
+			m_theDocument->readCssRules( &istream, false );
 		}
 		if( stylesheetType == "text/css" )
 		{
-			if( fileLoader )
+			if( s_fileLoader )
 			{
-				gak::STRING css = fileLoader( stylesheetFile );
-				theDocument->readCssRules( css, false );
+				gak::STRING css = s_fileLoader( stylesheetFile );
+				m_theDocument->readCssRules( css, false );
 			}
 			else if( exists( stylesheetFile ) )
 			{
 				std::ifstream istream( stylesheetFile );
-				theDocument->readCssRules( &istream, false );
+				m_theDocument->readCssRules( &istream, false );
 			}
 		}
-		theDocument->applyCssRules();
+		m_theDocument->applyCssRules();
 	}
 	static gak::STRING getTag( gak::xml::Element *xmlElement );
 	TTreeNode *addNode( TTreeNode *parentNode, gak::xml::Element *newElement );
 
-	void setChanged( void )
+	void setChanged()
 	{
-		*viewerInstance = true;
+		*m_viewerInstance = true;
 	}
-	bool hasChanged( void ) const
+	bool hasChanged() const
 	{
-		return *viewerInstance;
+		return *m_viewerInstance;
 	}
 public:		// Anwender-Deklarationen
 
-	bool refreshValue( gak::xml::Element *theItem=NULL );
+	bool refreshValue( gak::xml::Element *theItem=nullptr );
 	__fastcall TxmlEditorFrame(TComponent* Owner);
-	void initShow( void )
+	void initShow()
 	{
 		AttributeGrid->ColWidths[0] = AttributeGrid->Width/3;
 		AttributeGrid->ColWidths[1] = AttributeGrid->Width - AttributeGrid->ColWidths[0] - 25;
@@ -261,13 +274,11 @@ public:		// Anwender-Deklarationen
 	void initFrame( gak::ChangeManager *manager, gak::css::Rules *cssRules )
 	{
 		doEnterFunction("TxmlEditorFrame::initViewer");
-		if( viewerInstance )
-			delete viewerInstance;
-		viewerInstance = new XmlTreeViewer( manager, this );
-		this->cssRules = cssRules;
+		m_viewerInstance.reset( new XmlTreeViewer( manager, this ) );
+		m_cssRules = cssRules;
 	}
-	void clear( void );
-	void CreateDoc( void );
+	void clear();
+	void CreateDoc();
 	void OpenFile( const gak::STRING &fileName )
 	{
 		std::ifstream theInput((const char *)fileName);
@@ -280,50 +291,50 @@ public:		// Anwender-Deklarationen
 		gak::iSTRINGstream	theInput( xmlData );
 		OpenStream( &theInput, fileName );
 	}
-	gak::STRING getText( void )
+	gak::STRING getText()
 	{
-		return theDocument->generate( htmlMode ? gak::xml::HTML_MODE : gak::xml::XML_MODE );
+		return m_theDocument->generate( m_htmlMode ? gak::xml::HTML_MODE : gak::xml::XML_MODE );
 	}
-	gak::STRING getSchemaFile( void ) const
+	const gak::STRING &getSchemaFile() const
 	{
-		return schemaFile;
+		return m_schemaFile;
 	}
-	gak::STRING getStylesheetFile( gak::STRING *stylesheetType ) const
+	const gak::STRING &getStylesheetFile( gak::STRING *stylesheetType ) const
 	{
-		*stylesheetType = this->stylesheetType;
-		return stylesheetFile;
+		*stylesheetType = m_stylesheetType;
+		return m_stylesheetFile;
 	}
 	void SaveFile(const gak::STRING &fileName);
 	void buildTree(TTreeNode *parent, gak::xml::Element *xmlElem );
-	gak::STRING testDocument( void );
-	void refreshSchema( void )
+	gak::STRING testDocument();
+	void refreshSchema()
 	{
-		schemaFile = "";
-		if( theDocument )
-			schemaFile = schemaManager.refreshDocument( theDocument, true );
+		m_schemaFile.release();
+		if( m_theDocument )
+			m_schemaFile = m_schemaManager.refreshDocument( m_theDocument, true );
 		else
-			schemaManager.clearValidators();
+			m_schemaManager.clearValidators();
 	}
 	void Cut( TWinControl *active );
 	void Copy( TWinControl *active );
 	void Paste( TWinControl *active );
-	gak::xml::Document *getDocument( void ) const
+	const XmlDocPtr &getDocument() const
 	{
-		return theDocument;
+		return m_theDocument;
 	}
-	void setDocument(gak::xml::Document *newDocument, bool htmlMode );
+	void setDocument(const XmlDocPtr &newDocument, bool htmlMode );
 
 	void setStyleChangedCB( TStyleChanged newCB )
 	{
-		styleChangedCB = newCB;
+		m_styleChangedCB = newCB;
 	}
 	void setSchemaChangedCB( TXmlSchemaChanged newCB )
 	{
-		schemaChangedCB = newCB;
+		m_schemaChangedCB = newCB;
 	}
 	static void setPlainTextLoader( TPlainTextLoad fileLoader )
 	{
-		TxmlEditorFrame::fileLoader = fileLoader;
+		TxmlEditorFrame::s_fileLoader = fileLoader;
 	}
 	void selectXmlElement( gak::xml::Element *theElement );
 };

@@ -1,21 +1,21 @@
 /*
 		Project:		XML Editor
-		Module:			
-		Description:	
+		Module:			XmlViewerFrm.h
+		Description:	The XML renderer form
 		Author:			Martin Gäckler
 		Address:		Hofmannsthalweg 14, A-4030 Linz
 		Web:			https://www.gaeckler.at/
 
-		Copyright:		(c) 1988-2024 Martin Gäckler
+		Copyright:		(c) 2010-2026 Martin Gäckler
 
-		This program is free software: you can redistribute it and/or modify  
-		it under the terms of the GNU General Public License as published by  
+		This program is free software: you can redistribute it and/or modify
+		it under the terms of the GNU General Public License as published by
 		the Free Software Foundation, version 3.
 
-		You should have received a copy of the GNU General Public License 
+		You should have received a copy of the GNU General Public License
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Austria, Linz ``AS IS''
+		THIS SOFTWARE IS PROVIDED BY Martin Gäckler, Linz, Austria ``AS IS''
 		AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 		TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
 		PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
@@ -46,6 +46,8 @@
 #include <Forms.hpp>
 
 #include <gak/ChangeManager.h>
+#include "xmlEditFram.h"
+
 //---------------------------------------------------------------------------
 
 class TXmlViewerForm;
@@ -79,10 +81,10 @@ __published:	// IDE-managed Components
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall FormActivate(TObject *Sender);
 private:	// User declarations
-	XmlGuiViewer				*m_viewerInstance;
+	std::auto_ptr<XmlGuiViewer>	m_viewerInstance;
 	winlib::BasicWindow			m_myWinlibHandle;
 	winlib::XMLeditorChild		m_xmlEditor;
-	gak::xml::Document			*m_document;
+	XmlDocPtr					m_document;
 
 	void XmlItemClick( const TMessage &msg );
 	void XmlItemChanged( const TMessage &msg );
@@ -90,19 +92,15 @@ private:	// User declarations
 public:		// User declarations
 	__fastcall TXmlViewerForm(TComponent* Owner);
 
-	void setDocument( gak::xml::Document *newDocument, gak::ChangeManager *manager )
+	void setDocument( const XmlDocPtr &newDocument, gak::ChangeManager *manager )
 	{
 		doEnterFunction("TXmlViewerForm::setDocument");
 		m_document = newDocument;
 
-		if( m_viewerInstance )
-		{
-			delete m_viewerInstance;
-		}
-		m_viewerInstance = new XmlGuiViewer( manager, this );
+		m_viewerInstance.reset( new XmlGuiViewer( manager, this ) );
 
 		AnsiString newCaption = "XML Viewer ";
-		newCaption += (const char *)newDocument->getFilename();
+		newCaption += newDocument->getFilename().c_str();
 		Caption = newCaption;
 
 		m_xmlEditor.setDocument( newDocument );
