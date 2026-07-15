@@ -309,7 +309,7 @@ void __fastcall TxmlEditorFrame::XmlTreeViewEdited(TObject *,
 
 		S = (const char *)newTag;
 
-		m_viewerInstance->setChanged( theElement ); 
+		m_viewerInstance->setChanged( theElement );
 	}
 }
 //---------------------------------------------------------------------------
@@ -364,7 +364,7 @@ void __fastcall TxmlEditorFrame::XmlTreeViewDragDrop(TObject *,
 			Selected->MoveTo( node, naAddChild );
 			theElement->remove();
 			newParent->addObject( theElement );
-			m_viewerInstance->setChanged( theElement ); 
+			m_viewerInstance->setChanged( theElement );
 		}
 	}
 }

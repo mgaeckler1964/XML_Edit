@@ -193,7 +193,7 @@ private:	// Anwender-Deklarationen
 	gak::STRING				m_filename, m_schemaFile;
 	gak::STRING				m_stylesheetFile, m_stylesheetType;
 
-	std::auto_ptr<gak::DocumentViewer>	m_viewerInstance;
+	std::unique_ptr<gak::DocumentViewer>	m_viewerInstance;
 
 	static TPlainTextLoad	s_fileLoader;
 

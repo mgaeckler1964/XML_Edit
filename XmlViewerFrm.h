@@ -81,10 +81,10 @@ __published:	// IDE-managed Components
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall FormActivate(TObject *Sender);
 private:	// User declarations
-	std::auto_ptr<XmlGuiViewer>	m_viewerInstance;
-	winlib::BasicWindow			m_myWinlibHandle;
-	winlib::XMLeditorChild		m_xmlEditor;
-	XmlDocPtr					m_document;
+	std::unique_ptr<XmlGuiViewer>	m_viewerInstance;
+	winlib::BasicWindow				m_myWinlibHandle;
+	winlib::XMLeditorChild			m_xmlEditor;
+	XmlDocPtr						m_document;
 
 	void XmlItemClick( const TMessage &msg );
 	void XmlItemChanged( const TMessage &msg );
