@@ -1,8 +1,8 @@
 object XmlEditForm: TXmlEditForm
   Left = 730
-  Top = 463
-  Width = 782
-  Height = 541
+  Top = 448
+  Width = 801
+  Height = 556
   Caption = 'XML Editor'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -20,32 +20,32 @@ object XmlEditForm: TXmlEditForm
   PixelsPerInch = 96
   TextHeight = 13
   inline xmlEditorFrame: TxmlEditorFrame
-    Width = 774
-    Height = 495
+    Width = 785
+    Height = 497
     Align = alClient
     inherited Splitter2: TSplitter
-      Height = 476
+      Height = 478
     end
     inherited XmlTreeView: TTreeView
-      Height = 476
+      Height = 478
     end
     inherited Panel1: TPanel
-      Width = 552
-      Height = 476
+      Width = 563
+      Height = 478
       inherited Splitter1: TSplitter
-        Width = 550
+        Width = 561
       end
       inherited AttributeGrid: TStringGrid
-        Width = 550
+        Width = 561
       end
       inherited ValueMemo: TMemo
-        Width = 550
-        Height = 285
+        Width = 561
+        Height = 287
       end
     end
     inherited StatusBar: TStatusBar
-      Top = 476
-      Width = 774
+      Top = 478
+      Width = 785
     end
   end
   object OpenDialog: TOpenDialog
